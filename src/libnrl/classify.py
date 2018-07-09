@@ -51,16 +51,26 @@ class Classifier(object):
         Y = self.clf.predict(X_, top_k_list=top_k_list)
         return Y
 
-    def split_train_evaluate(self, X, Y, train_precent, seed=0):
+    def split_train_evaluate(self, X, Y, train_percent, seed=0, embedding=None):
         state = numpy.random.get_state()
-
-        training_size = int(train_precent * len(X))
+        training_size = int(train_percent * len(X))
         numpy.random.seed(seed)
         shuffle_indices = numpy.random.permutation(numpy.arange(len(X)))
+
+        if ~(embedding is None):
+            positive_indices = []
+            nodes = list(embedding.keys())
+            for i in shuffle_indices:
+                if X[i] in nodes:
+                    positive_indices.append(i)
+            print("number of nodes not matching:",len(shuffle_indices) - len(positive_indices))
+            shuffle_indices = positive_indices
+            training_size = int(train_percent * len(shuffle_indices))
+
         X_train = [X[shuffle_indices[i]] for i in range(training_size)]
         Y_train = [Y[shuffle_indices[i]] for i in range(training_size)]
-        X_test = [X[shuffle_indices[i]] for i in range(training_size, len(X))]
-        Y_test = [Y[shuffle_indices[i]] for i in range(training_size, len(X))]
+        X_test = [X[shuffle_indices[i]] for i in range(training_size, len(shuffle_indices))]
+        Y_test = [Y[shuffle_indices[i]] for i in range(training_size, len(shuffle_indices))]
 
         self.train(X_train, Y_train, Y)
         numpy.random.set_state(state)
@@ -83,15 +93,16 @@ def load_embeddings(filename):
     assert len(vectors) == node_num
     return vectors
 
-def read_node_label(filename):
+def read_node_label(filename, sep="\t"):
     fin = open(filename, 'r')
     X = []
     Y = []
+
     while 1:
         l = fin.readline()
         if l == '':
             break
-        vec = l.strip().split(' ')
+        vec = l.strip().split(sep)
         X.append(vec[0])
         Y.append(vec[1:])
     fin.close()

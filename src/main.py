@@ -5,7 +5,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from sklearn.linear_model import LogisticRegression
 from libnrl.graph import *
 from libnrl import node2vec
-from libnrl.classify import Classifier, read_node_label
+from libnrl.classify import Classifier, read_node_label, load_embeddings
 from libnrl import line
 from libnrl import tadw
 from libnrl.gcn import gcnAPI
@@ -100,9 +100,12 @@ def main(args):
         assert args.feature_file != ''
         g.read_node_label(args.label_file)
         g.read_node_features(args.feature_file)
-        model = gcnAPI.GCN(graph=g, dropout=args.dropout,
-                            weight_decay=args.weight_decay, hidden1=args.hidden,
-                            epochs=args.epochs, clf_ratio=args.clf_ratio)
+        model = gcnAPI.GCN(graph=g,
+                           dropout=args.dropout,
+                           weight_decay=args.weight_decay,
+                           hidden1=args.hidden,
+                           epochs=args.epochs,
+                           clf_ratio=args.clf_ratio)
     elif args.method == 'grarep':
         model = GraRep(graph=g, Kstep=args.kstep, dim=args.representation_size)
     t2 = time.time()
@@ -123,3 +126,21 @@ if __name__ == "__main__":
     random.seed(32)
     np.random.seed(32)
     main(parse_args())
+
+    # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/OpenNE/vec_all_node2vec.txt")
+    # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/OpenNE/miRNA-mRNA_LINE.txt")
+
+    # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_source_target_embeddings_128.embeddings")
+    #
+    # X, Y = read_node_label("/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_node_labels_disease.tsv", sep="\t")
+    # # X, Y = read_node_label(
+    # #     "/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_node_labels_family.tsv",
+    # #     sep=" ")
+    #
+    # clf = Classifier(vectors=embedding, clf=LogisticRegression())
+    # clf.split_train_evaluate(X, Y, train_percent=0.95, embedding=embedding)
+
+
+
+
+

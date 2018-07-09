@@ -19,7 +19,7 @@ class Node2vec(object):
             self.walker = walker.BasicWalker(graph, workers=kwargs["workers"])
         else:
             self.walker = walker.Walker(graph, p=p, q=q, workers=kwargs["workers"])
-            print("Preprocess transition probs...")
+            print("Preprocess transition probs... (with", kwargs["workers"], "workers.)")
             self.walker.preprocess_transition_probs()
         sentences = self.walker.simulate_walks(num_walks=num_paths, walk_length=path_length)
         kwargs["sentences"] = sentences
