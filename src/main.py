@@ -130,12 +130,13 @@ if __name__ == "__main__":
     # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/OpenNE/vec_all_node2vec.txt")
     # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/OpenNE/miRNA-mRNA_LINE.txt")
 
-    # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_source_target_embeddings_128.embeddings")
+    # embedding = load_embeddings("/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/miRNA-mRNA_source_target_embeddings_128_edge_sgd_seed_0.embeddings")
     #
     # X, Y = read_node_label("/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_node_labels_disease.tsv", sep="\t")
-    # # X, Y = read_node_label(
-    # #     "/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_node_labels_family.tsv",
-    # #     sep=" ")
+
+    # X, Y = read_node_label(
+    #     "/home/jonny_admin/PycharmProjects/MultiOmicsGraphEmbedding/moge/data/lncRNA_miRNA_mRNA/miRNA-mRNA_node_labels_family.tsv",
+    #     sep=" ")
     #
     # clf = Classifier(vectors=embedding, clf=LogisticRegression())
     # clf.split_train_evaluate(X, Y, train_percent=0.95, embedding=embedding)
